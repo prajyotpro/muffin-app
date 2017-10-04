@@ -56,14 +56,7 @@ if (!sticky.listen(server, port)) {
     // ========================================== ROUTES ==========================================
     // API V1.0 Routes
     app.use('/api/v1/user',         userRouter);
-
-
-    // ========================================== DOC ==========================================
-    app.use('/doc',                                     express.static(path.resolve('public')));
-    app.use('/' + config.imageUploadPath.resized + '',  express.static(path.resolve(config.imageUploadPath.resized)));
-    app.use('/' + config.imageUploadPath.chat + '',     express.static(path.resolve(config.imageUploadPath.chat)));
-    app.use('/' + config.privacypolicy.path + '',       express.static(path.resolve(config.privacypolicy.path)));
-
+    
 
     // ========================================== SOCKET ==========================================
     var chat = io
