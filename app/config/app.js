@@ -22,6 +22,10 @@ Config.loadServerConfig = function () {
 
     Config.prototype.SERVER.API_PATH 		= '/api/';
     Config.prototype.SECURITY.SALT_ROUNDS 	= 10;
+
+    Config.prototype.INACTIVE               = 0;
+    Config.prototype.ACTIVE                 = 1;
+    Config.prototype.DISABLED               = 2;
 }
 
 Config.prototype.CODES = statusCodes;

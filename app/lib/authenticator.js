@@ -12,14 +12,14 @@ Authenticator.prototype.authenticate = function(req, res, next) {
 	var token = getToken(headers);
 
 	if (!token) {
-		return res.status(401).send("Unauthorized");
+		return res.status(config.CODES.UNAUTHORIZED).send("Unauthorized");
 	}
 
 	try {
 	    var decodedToken = jwt.decode(token, config.SECURITY.SALT);
 	}
 	catch(err) {
-	    return res.status(401).send("Unauthorized");
+	    return res.status(config.CODES.UNAUTHORIZED).send("Unauthorized");
 	}
 
 	var userId = getUserIdFromDecodedToken(decodedToken);
@@ -29,7 +29,7 @@ Authenticator.prototype.authenticate = function(req, res, next) {
 		token 	: token
 	}}).then(function(user) {
 		if (user.length == 0) {
-			return res.status(401).send("Unauthorized");
+			return res.status(config.CODES.UNAUTHORIZED).send("Unauthorized");
 		}
 
 		req.user_info = user[0].user_id;
@@ -49,6 +49,49 @@ Authenticator.prototype.generatePassword = function(passwordText, callback) {
 
 	  	return callback(false, hash);
 	});
+};
+
+
+Authenticator.prototype.comparePassword = function(comparisionObject, callback) { 
+
+	if (typeof comparisionObject != 'object') {
+		return callback('Invalid input', false);
+	}
+
+	if (comparisionObject.password == undefined) {
+		return callback('Invalid input', false);
+	}
+
+	if (comparisionObject.hash == undefined) {
+		return callback('Invalid input', false);
+	}
+
+	bcrypt.compare(comparisionObject.password.trim(), 
+		comparisionObject.hash.trim(), 
+		function(err, res) {
+	    
+	    return callback(err, res);
+	});
+};
+
+
+Authenticator.prototype.generateToken = function(userInfo, callback) {
+
+	if (typeof userInfo != 'object') {
+		return callback('Invalid user data.');
+	}
+
+	if (userInfo.id == undefined) {
+		return callback('Invalid user data.');
+	}
+
+	// ** Generating current date to randomise token
+    let now = new Date();
+    let generatedToken = jwt.encode(userInfo.id + '_' + now, config.SECURITY.SALT);
+
+    userInfo.token = generatedToken;
+
+    return callback(false, userInfo);
 };
 
 

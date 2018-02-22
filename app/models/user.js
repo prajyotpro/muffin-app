@@ -49,62 +49,11 @@ module.exports 	= function (sequelize, DataTypes) {
 			type: DataTypes.INTEGER,
 			defaultValue: 1,
 		},
-		'facebook_id': {
-			type: DataTypes.STRING,
-			unique: true,
-		},
 		'dob': {
 			type: DataTypes.DATEONLY,
 			allowNull: true
 		},
-		'instagram_handle': {
-			type: DataTypes.STRING
-		},
-		'gender': {
-			type: DataTypes.STRING(2),
-			allowNull: true,
-			validate: {
-				isIn: {
-					args: [['M', 'F', 'm', 'f']],
-					msg: "Must be M or F"
-				}
-			}
-		},
-		'height': {
-			type: DataTypes.STRING,
-			allowNull: true,
-		},
-		'country': {
-			type: DataTypes.STRING
-		},
-		'city': {
-			type: DataTypes.STRING
-		},
-		'school': {
-			type: DataTypes.STRING
-		},
-		'other_school': {
-			type: DataTypes.STRING
-		},
-		'job': {
-			type: DataTypes.STRING
-		},
-		'company': {
-			type: DataTypes.STRING
-		},
-		'religion': {
-			type: DataTypes.STRING
-		},
-		'ethnicity': {
-			type: DataTypes.STRING
-		},
-		'bio': {
-			type: DataTypes.STRING(1000)
-		},
-		'is_hidden': {
-			type: DataTypes.INTEGER
-		},
-		'is_active': {
+		'status': {
 			type: DataTypes.INTEGER,
 			defaultValue: '1'
 		}
@@ -140,9 +89,32 @@ module.exports 	= function (sequelize, DataTypes) {
 						return callback(error, false);
 					});
 		    }
+
 		], function (err, result) {
 		    
-			return callback(err, result);
+			return callback(err, result.dataValues);
+		});
+	};
+
+	user.getByEmail = function(email, callback) {
+
+		user.findAll({
+			where: {
+				email: email.trim(),
+				status: config.ACTIVE
+			}
+		})
+		.then(function(result) {
+
+			if (result.length == 0) {
+				return callback('Invalid login credentials.', false);
+			}
+
+			return callback(false, result[0].dataValues);
+		})
+		.catch(function(error) {
+
+			return callback(error, false);
 		});
 	};
 

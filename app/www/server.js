@@ -5,7 +5,6 @@ var models      = require('../models');
 
 
 var http        = require('http');
-// var express     = require('express');
 var app         = module.exports = require('express')();
 
 
@@ -68,8 +67,8 @@ if (!sticky.listen(server, port)) {
             chat.emit('connected', { success: true });
         });
 
-    const used = process.memoryUsage();
-    for (let key in used) {
-        console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`)
-    };
+    // const used = process.memoryUsage();
+    // for (let key in used) {
+    //     console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`)
+    // };
 }
