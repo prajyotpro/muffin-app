@@ -1,14 +1,34 @@
-var models = require('../models');
-var config = require('../config/app');
+const models 	= require('../models');
+const config 	= require('../config/app');
+const validator	= require('../lib/validator');
+const async 	= require('async');
+const authenticator = require('../lib/authenticator');
 
-module.exports = function (sequelize, DataTypes) {
 
-	const user = sequelize.define('user', {
-		'full_name': {
+module.exports 	= function (sequelize, DataTypes) {
+
+	const tableDefination = {
+		'first_name': {
 			type: DataTypes.STRING,
 			validate: {
 				notEmpty: {
 					msg: "Name cannot be empty."
+				}
+			}
+		},
+		'last_name': {
+			type: DataTypes.STRING,
+			validate: {
+				notEmpty: {
+					msg: "Name cannot be empty."
+				}
+			}
+		},
+		'password': {
+			type: DataTypes.STRING,
+			validate: {
+				notEmpty: {
+					msg: "Password cannot be empty."
 				}
 			}
 		},
@@ -88,7 +108,44 @@ module.exports = function (sequelize, DataTypes) {
 			type: DataTypes.INTEGER,
 			defaultValue: '1'
 		}
-	});
+	};
+
+	const user = sequelize.define('user', tableDefination);
+
+	user.createNew = function(inputData, callback) {
+
+		// let required = ['first_name', 'last_name', 'email', 'password'];
+		// validator.validate(inputData, tableDefination, function(error, result) {
+
+		// });
+		// let password = req.body.password;
+
+		async.waterfall([
+
+		    function(callback) { callback(null, inputData.password); },
+
+		    authenticator.generatePassword, 
+
+		    function(password, callback) {
+
+		    	inputData.password = password;
+
+		    	user.create(inputData)
+					.then(function (result) {
+
+						return callback(null, result);
+					})
+					.catch(function (error) { 
+
+						return callback(error, false);
+					});
+		    }
+		], function (err, result) {
+		    
+			return callback(err, result);
+		});
+	};
+
 
 	return user;
 }

@@ -9,7 +9,7 @@ var yaml = require('gulp-yaml');
 gulp.task('nodeMon', function () {
 	gutil.log(gutil.colors.yellow('=> Firing up node server + nodemon ...'));
 	nodemon({
-		script: './app/bin/server.js',
+		script: './app/www/server.js',
 		ext: 'js',
 		env: { 'NODE_ENV': 'local' }
 	})

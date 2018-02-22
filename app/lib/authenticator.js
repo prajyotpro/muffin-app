@@ -1,37 +1,60 @@
-var config 		= require('../config/app');
-var models		= require('../models');
-var jwt         = require('jwt-simple');
+const config 		= require('../config/app');
+const models		= require('../models');
+const jwt         	= require('jwt-simple');
+const bcrypt 		= require('bcrypt');
 
-module.exports = {
 
-	authenticate: 	function(headers, callback) {
+const Authenticator = function() {};
 
-		var token = getToken(headers);
 
-		if (!token) {
-			return callback(false);
-		}
+Authenticator.prototype.authenticate = function(req, res, next) {
 
-		try {
-		    var decodedToken = jwt.decode(token, config.security.salt);
-		}
-		catch(err) {
-		    return callback(false);
-		}
+	var token = getToken(headers);
 
-		var userId = getUserIdFromDecodedToken(decodedToken);
-
-		models.token.findAll({where: {
-			user_id	: userId,
-			token 	: token
-		}}).then(function(user) {
-			if (user.length == 0) {
-				return callback(false);
-			}
-			return callback(user[0].user_id);
-		});
+	if (!token) {
+		return res.status(401).send("Unauthorized");
 	}
-}
+
+	try {
+	    var decodedToken = jwt.decode(token, config.SECURITY.SALT);
+	}
+	catch(err) {
+	    return res.status(401).send("Unauthorized");
+	}
+
+	var userId = getUserIdFromDecodedToken(decodedToken);
+
+	models.token.findAll({where: {
+		user_id	: userId,
+		token 	: token
+	}}).then(function(user) {
+		if (user.length == 0) {
+			return res.status(401).send("Unauthorized");
+		}
+
+		req.user_info = user[0].user_id;
+		return next();
+	});
+};
+
+
+Authenticator.prototype.generatePassword = function(passwordText, callback) { 
+	
+	bcrypt.hash(passwordText.trim(), config.SECURITY.SALT_ROUNDS, function(err, hash) {
+	  	
+	  	if (err) {
+	  		console.log(err);
+	  		return callback("Error generating password.", false);
+	  	}
+
+	  	return callback(false, hash);
+	});
+};
+
+
+module.exports = new Authenticator();
+
+
 // ========================================== FUNCTIONS ==========================================
 var getToken = function (headers) {
 

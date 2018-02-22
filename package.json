@@ -24,6 +24,7 @@
     "app-module-path": "^2.2.0",
     "async": "^2.4.1",
     "base64-img": "^1.0.3",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.1",
     "connect-multiparty": "^2.0.0",
     "easyimage": "^2.1.0",
@@ -59,7 +60,7 @@
     "sticky-cluster": "^0.3.1",
     "sticky-session": "^1.1.2",
     "underscore": "^1.8.3",
-    "validator": "^7.1.0"
+    "validator": "^7.2.0"
   },
   "devDependencies": {
     "gulp-watch": "^4.3.11",

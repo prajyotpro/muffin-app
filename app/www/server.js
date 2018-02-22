@@ -5,15 +5,15 @@ var models      = require('../models');
 
 
 var http        = require('http');
-var express     = require('express');
-var app         = express();
+// var express     = require('express');
+var app         = module.exports = require('express')();
 
 
 var server      = require('http').createServer(app);
 var io          = require('socket.io')(server);
 
 
-var port        = process.env.PORT || config.server.port;
+var port        = process.env.PORT || config.SERVER.PORT;
 
 
 var bodyParser  = require('body-parser');
@@ -21,6 +21,8 @@ var helmet      = require('helmet');
 var path        = require('path');
 var multer      = require('multer');
 var multipart   = require('connect-multiparty');
+
+app.set('CONFIG', config);
 
 
 // ========================================== CONTROLLERS ==========================================
@@ -55,7 +57,7 @@ if (!sticky.listen(server, port)) {
 
     // ========================================== ROUTES ==========================================
     // API V1.0 Routes
-    app.use('/api/v1/user',         userRouter);
+    app.use(config.SERVER.API_PATH + 'v1/users', userRouter);
     
 
     // ========================================== SOCKET ==========================================
@@ -65,4 +67,9 @@ if (!sticky.listen(server, port)) {
             console.log('Socket connected.');
             chat.emit('connected', { success: true });
         });
+
+    const used = process.memoryUsage();
+    for (let key in used) {
+        console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`)
+    };
 }
