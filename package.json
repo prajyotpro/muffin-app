@@ -24,7 +24,7 @@
     "app-module-path": "^2.2.0",
     "async": "^2.4.1",
     "base64-img": "^1.0.3",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.17.1",
     "connect-multiparty": "^2.0.0",
     "easyimage": "^2.1.0",
