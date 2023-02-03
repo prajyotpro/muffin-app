@@ -10,6 +10,10 @@ chai.use(chaiHttp);
 
 describe("Home", () => {
 
+    after(function () {
+        process.exit();
+    });
+    
     describe('/GET home', () => {
         it('it should GET "GET request to the homepage" in response', (done) => {
               chai.request('http://localhost:3001')
@@ -18,7 +22,6 @@ describe("Home", () => {
                     res.should.have.status(200);
                     res.body.should.be.eql("GET request to the homepage");
                     done();
-                    process.exit();
               })
         });
     });
