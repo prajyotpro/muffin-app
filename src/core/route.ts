@@ -6,11 +6,11 @@ module.exports = function (app: any) {
         return res.send("Welcome to muffin api services.");
     });
 
-    return fs.readdir('./dist/routes/', (err: any, files: any) => {
+    return fs.readdir('./src/Route/', (err: any, files: any) => {
 
         return files.forEach((file: string) => {
-            if (file.indexOf("index.js") < 0) {
-                let originalRouterName = file.split(".js");
+            if (file.indexOf("index.ts") < 0) {
+                let originalRouterName = file.split(".ts");
                 let routerName = originalRouterName[0].split("-");
 
                 if (routerName.length < 2) {
@@ -18,7 +18,7 @@ module.exports = function (app: any) {
                     routerName[0] = "v1";
                 }
 
-                return app.use("/" + routerName[0] + "/" + routerName[1].toString() + "/", require("../routes/" + originalRouterName[0]));
+                return app.use("/" + routerName[0] + "/" + routerName[1].toString() + "/", require("../Route/" + originalRouterName[0]));
             }
         });
     });

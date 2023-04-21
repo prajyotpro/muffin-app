@@ -2,12 +2,12 @@
   "name": "muffin-app",
   "version": "1.0.0",
   "description": "Light weight express JS with TS",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "start": "node src/index.ts",
+    "dev": "nodemon -q src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix",
     "bdd-test": "mocha test/bdd"
   },
   "author": "Prajyot Khandeparkar",
