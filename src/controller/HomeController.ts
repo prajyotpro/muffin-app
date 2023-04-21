@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BaseController } from "../core/BaseController";
+import { BaseController } from "../Core/BaseController";
 
 export class HomeController extends BaseController {
 
