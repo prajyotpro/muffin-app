@@ -1,36 +1,20 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-const bodyParser = require('body-parser');
+import 'dotenv/config';
+import 'reflect-metadata';
 
-dotenv.config();
+import { Container } from 'inversify';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
+import './Controller/HomeController';
 
-const cluster = require('cluster');
-if (cluster.isMaster) {
-    cluster.fork();
+export async function Bootstrap() {
 
-    cluster.on('exit', function () {
-        cluster.fork();
-    });
-}
-
-if (cluster.isWorker) {
-
-    const app: Express = express();
     const port = process.env.PORT;
+    
+    const container = new Container();
+    const server = new InversifyExpressServer(container);
 
-    if (process.env.ENVIRONMENT == "dev") {
-        app.use(require('express-status-monitor')());
-    }
-
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.use(bodyParser.json());
-
-    require('./core/route')(app)
-
-    app.listen(port, () => {
-        console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-    });
+    const app = server.build();
+    app.listen(port, () => console.log(`⚡️[server]: Server is running at http://localhost:${port}`));
 }
+
+Bootstrap();
