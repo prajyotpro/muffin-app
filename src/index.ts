@@ -4,20 +4,33 @@ const bodyParser = require('body-parser');
 
 dotenv.config();
 
-const app: Express = express();
-const port = process.env.PORT;
 
-if (process.env.ENVIRONMENT == "dev") {
-    app.use(require('express-status-monitor')());
+const cluster = require('cluster');
+if (cluster.isMaster) {
+    cluster.fork();
+
+    cluster.on('exit', function () {
+        cluster.fork();
+    });
 }
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
+if (cluster.isWorker) {
 
-require('./core/route')(app)
+    const app: Express = express();
+    const port = process.env.PORT;
 
-app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+    if (process.env.ENVIRONMENT == "dev") {
+        app.use(require('express-status-monitor')());
+    }
+
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
+
+    require('./core/route')(app)
+
+    app.listen(port, () => {
+        console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    });
+}
