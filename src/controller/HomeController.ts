@@ -1,9 +1,15 @@
-import { Request, Response } from "express";
+import { controller, httpGet } from "inversify-express-utils";
 import { BaseController } from "../Core/BaseController";
 
-export class HomeController extends BaseController {
 
-    static index(req:Request, res:Response) {
-        return res.json('GET request to the homepage')
+@controller('/home')
+export class HomeController extends BaseController {
+    constructor() {
+        super();
+    }
+    
+    @httpGet('/')
+    async index() {
+        return "Welcome to muffin app.";
     }
 }
