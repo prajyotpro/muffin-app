@@ -1,4 +1,5 @@
-import 'dotenv/config';
+import "reflect-metadata";
+
 import * as bodyParser from "body-parser";
 import { InversifyExpressServer } from "inversify-express-utils";
 

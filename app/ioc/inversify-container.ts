@@ -2,7 +2,8 @@ import "reflect-metadata";
 
 import Types from "@/ioc/types";
 import { Container } from "inversify";
-import { GetGreetingUseCase, IGetGreetingUseCase } from "@/usecase/GetGreetingUseCase";
+
+import { GetGreetingUseCase, IGetGreetingUseCase } from "@/usecase/getGreetingUseCase";
 
 // import { IGreetingRepository } from "@/repository/igreeting";
 // import { GreetingRepository } from "@/repository/greeting";
