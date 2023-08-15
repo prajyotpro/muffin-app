@@ -1,6 +1,6 @@
 {
   "name": "muffin-app",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Light weight express JS with TS",
   "main": "index.ts",
   "scripts": {
