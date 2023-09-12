@@ -1,7 +1,7 @@
 ### Getting Started
 
 #### Language
-We love Node.js, to keep your code of high-quality, scalable, and maintainable that is easier to debug and test we have opted TypeScript as the main programming language.
+We love Node.js, to keep your code of high-quality and best effecient in maintainence, we have opted TypeScript as the main programming language.
 
 #### Prerequisites
 Please make sure that Node.js (version >= 16) is installed on your operating system.
@@ -25,12 +25,21 @@ app/
         httpStatus.ts
         result.ts
     ioc/
-        inversify-container.ts
+        container.ts
         types.ts
     usecase/
         getGreetingUseCase.ts
     service/
     utils/
+test/
+    unit/
+        usecase/
+            getGreetingUseCase.test.ts
+        service/
+        utils/
+    spec/
+        controller/
+            greeting.test.ts
 ```
 
 

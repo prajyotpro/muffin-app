@@ -3,7 +3,7 @@ import "reflect-metadata";
 import * as bodyParser from "body-parser";
 import { InversifyExpressServer } from "inversify-express-utils";
 
-import container from "@/ioc/inversify-container";
+import container from "@/ioc/container";
 
 import '@/controller/greeting';
 
