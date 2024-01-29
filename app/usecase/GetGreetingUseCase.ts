@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { Result, successResult } from "@/core/common/result";
+import { Result, successResult } from "core/common/result";
 
 export interface IGetGreetingUseCase {
     execute(): Promise<Result<string>>;

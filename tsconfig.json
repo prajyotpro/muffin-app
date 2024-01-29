@@ -22,7 +22,7 @@
       "@/ioc/*": ["app/ioc/*"],
       "@/model/*": ["app/model/*"],
       "@/usecase/*": ["app/usecase/*"],
-      "@/core/*": ["app/core/*"],
+      "@/core/*": ["core/*"],
       "@/test/*": ["test/*"],
       "@/service/*": ["app/service/*"],
     }

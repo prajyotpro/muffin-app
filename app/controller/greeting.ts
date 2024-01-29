@@ -2,24 +2,26 @@ import { controller, httpGet, interfaces, request, response } from "inversify-ex
 import Types from "../ioc/types";
 import { GetGreetingUseCase } from "@/usecase/getGreetingUseCase";
 import { inject } from "inversify";
-import { HttpStatus } from "@/core/common/httpStatus";
-import { sendSuccessResponse } from "@/utils/response";
-import { Request, Response } from "express";
+import { sendSuccessResponse } from "@/core/common/response";
+import { Response } from "express";
+import { BaseController } from "@/core/controller/base";
+import { LoggerMiddleware } from "app/middleware/logger";
 
 
 @controller('/welcome')
-export class HomeController implements interfaces.Controller {
+export class HomeController extends BaseController implements interfaces.Controller {
+
     constructor(
         @inject(Types.UseCase.GetGreetingUseCase) private getGreetingUseCase: GetGreetingUseCase,
     ) {
-        //
+        super();
     }
 
-    @httpGet('/')
+    @httpGet('/', LoggerMiddleware)
     async index(
         @response() res: Response,
     ) {
         const result = await this.getGreetingUseCase.execute();
-        return sendSuccessResponse(res, HttpStatus.OK, result);
+        return sendSuccessResponse(res, this.httpStatus.OK, result);
     }
 }

@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { HttpStatus } from "../core/common/httpStatus";
+import { HttpStatus } from "./httpStatus";
 
 export const sendErrorResponse = (
     res: Response,
